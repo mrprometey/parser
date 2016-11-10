@@ -1,4 +1,4 @@
-package items;
+package model.vk;
 
 public class VkResponse {
 	
