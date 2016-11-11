@@ -3,18 +3,13 @@ package main;
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 import javax.net.ssl.HttpsURLConnection;
-import javax.swing.JSpinner.DateEditor;
-
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 
 import com.google.gson.Gson;
 
@@ -59,11 +54,22 @@ public class Parser {
 				} catch (ParseException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
+					return null;
 				}
 				e.printStackTrace();
 			}
 			
-			event.place = parts[1];
+			String[] parts2 = parts[1].split(",");
+			Pattern timePattern = Pattern.compile("\\d{2}[:\\. ]\\d{2}");
+			int i = 0;
+			while (i<parts2.length && !timePattern.matcher(parts2[i]).find()) {
+				i++;
+			}
+			if (i>0 && i<parts2.length){
+				event.time = String.join(",", Arrays.copyOfRange(parts2, i, parts2.length));
+				event.place = String.join(",", Arrays.copyOfRange(parts2, 0, i));
+			}
+			
 		} else {
 			return null;
 		}

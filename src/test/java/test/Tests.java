@@ -23,11 +23,17 @@ public class Tests {
 		for (int i=0; i<posts.length; i++) {
 			LocalEvent event = Parser.parseVkPost(posts[i]);
 			if (event != null) {
+				result.append("##########  PARSED INFO:  ##########\r\n");
 				result.append("Date: " + event.getDateString() + "\r\n");
+				result.append("Time: " + event.time + "\r\n");
 				result.append("Place: " + event.place + "\r\n");
+			} else {
+				result.append("%%%%%%%%%%  NOT PARSED:  %%%%%%%%%%%\r\n");
 			}
+			result.append("\r\n*** ORIGINAL TEXT:***\r\n");
 			result.append(posts[i].text);
-			result.append("\r\n#######################\r\n");
+			result.append("\r\n\r\n\r\n");
+			
 		}
 		try (Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("test-output/result.txt"), "UTF-8"))) {
 		    out.write(result.toString());
