@@ -1,9 +1,7 @@
 package model.local;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 public class LocalEvent {
 	
@@ -11,7 +9,9 @@ public class LocalEvent {
 	public Date date;
 	public String time;
 	public String place;
+	public String name;
 	public String description;
+	public String link;
 	
 	public LocalEvent() {
 		// TODO Auto-generated constructor stub
@@ -20,9 +20,6 @@ public class LocalEvent {
 	public String getDateString(){
 		if (date == null)
 			return "";
-		Calendar calendar = new GregorianCalendar();
-		calendar.setTime(this.date);
-		calendar.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR));
-		return new SimpleDateFormat("dd.MM.yyyy").format(calendar.getTime());
+		return new SimpleDateFormat("dd.MM.yyyy").format(date);
 	}
 }

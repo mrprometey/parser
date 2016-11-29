@@ -16,7 +16,7 @@ public class Tests {
 
 	@Test
 	public void jsonParsingTest() {
-		String url = "https://api.vk.com/method/wall.get?domain=minskforfree&count=20&v=5.59";
+		String url = "https://api.vk.com/method/wall.get?domain=minskforfree&count=50&v=5.59";
 		Vk vk = Parser.getInfo(url);
 		VkPost[] posts = vk.response.items;
 		StringBuilder result = new StringBuilder();
@@ -27,6 +27,8 @@ public class Tests {
 				result.append("Date: " + event.getDateString() + "\r\n");
 				result.append("Time: " + event.time + "\r\n");
 				result.append("Place: " + event.place + "\r\n");
+				result.append("Name: " + event.name + "\r\n");
+				result.append("Link: " + event.link + "\r\n");
 			} else {
 				result.append("%%%%%%%%%%  NOT PARSED:  %%%%%%%%%%%\r\n");
 			}
