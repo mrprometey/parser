@@ -25,7 +25,7 @@ public class Tests {
 			if (event != null) {
 				result.append("##########  PARSED INFO:  ##########\r\n");
 				result.append("Dates: " + event.getDateString() + "\r\n");
-				result.append("Time: " + event.time + "\r\n");
+				result.append("Time: " + event.getTimeString() + "\r\n");
 				result.append("Place: " + event.place + "\r\n");
 				result.append("Name: " + event.name + "\r\n");
 				result.append("Link: " + event.link + "\r\n");

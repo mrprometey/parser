@@ -1,13 +1,14 @@
 package model.local;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.LinkedList;
 
 public class LocalEvent {
 	
 	public int id;
 	public LinkedList<EventDate> dates = new LinkedList<EventDate>();
-	public String time;
+	public LinkedList<LocalTime> sessions = new LinkedList<LocalTime>();
 	public String place;
 	public String name;
 	public String description;
@@ -24,6 +25,15 @@ public class LocalEvent {
 			result.append(format.format(eventDate.startDate));
 			result.append("-");
 			result.append(format.format(eventDate.endDate));
+			result.append("; ");
+		}
+		return result.toString();
+	}
+	
+	public String getTimeString(){
+		StringBuffer result = new StringBuffer();
+		for (LocalTime time : sessions) {
+			result.append(time.toString());
 			result.append("; ");
 		}
 		return result.toString();

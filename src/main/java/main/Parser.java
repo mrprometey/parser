@@ -5,6 +5,7 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -60,7 +61,8 @@ public class Parser {
 			i++;
 		}
 		if (i>0 && i<parts2.length){
-			event.time = String.join(",", Arrays.copyOfRange(parts2, i, parts2.length));
+			String timePart = String.join(",", Arrays.copyOfRange(parts2, i, parts2.length));
+			parseTime(timePart, event);
 			event.place = String.join(",", Arrays.copyOfRange(parts2, 0, i));
 		}
 		
@@ -148,5 +150,35 @@ public class Parser {
 		}
 		
 		return calendar.getTime();
+	}
+	
+	private static void parseTime(String input, LocalEvent event){
+		Pattern timePattern = Pattern.compile("(\\d|[01]\\d|2[0-3])[:\\.\\- ](\\d[05])");
+		Matcher matcher = timePattern.matcher(input);
+		
+		//List of sessions
+		if (input.matches("(?:[и;,/ ]{0,3}(?:\\d|[01]\\d|2[0-3])[:\\.\\- ]\\d[05]){2,}")) {
+			while (matcher.find()) {
+				try {
+					Integer hours = Integer.valueOf(matcher.group(1));
+					Integer minutes = Integer.valueOf(matcher.group(2));
+					LocalTime time = LocalTime.of(hours, minutes);
+					event.sessions.add(time);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		else if (matcher.find()) {
+			try {
+				Integer hours = Integer.valueOf(matcher.group(1));
+				Integer minutes = Integer.valueOf(matcher.group(2));
+				LocalTime time = LocalTime.of(hours, minutes);
+				event.sessions.add(time);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }
