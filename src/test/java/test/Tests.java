@@ -24,7 +24,7 @@ public class Tests {
 			LocalEvent event = Parser.parseVkPost(posts[i]);
 			if (event != null) {
 				result.append("##########  PARSED INFO:  ##########\r\n");
-				result.append("Date: " + event.getDateString() + "\r\n");
+				result.append("Dates: " + event.getDateString() + "\r\n");
 				result.append("Time: " + event.time + "\r\n");
 				result.append("Place: " + event.place + "\r\n");
 				result.append("Name: " + event.name + "\r\n");

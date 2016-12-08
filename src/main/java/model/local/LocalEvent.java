@@ -1,12 +1,12 @@
 package model.local;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.LinkedList;
 
 public class LocalEvent {
 	
 	public int id;
-	public Date date;
+	public LinkedList<EventDate> dates = new LinkedList<EventDate>();
 	public String time;
 	public String place;
 	public String name;
@@ -18,8 +18,14 @@ public class LocalEvent {
 	}
 	
 	public String getDateString(){
-		if (date == null)
-			return "";
-		return new SimpleDateFormat("dd.MM.yyyy").format(date);
+		StringBuffer result = new StringBuffer();
+		SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+		for (EventDate eventDate : dates) {
+			result.append(format.format(eventDate.startDate));
+			result.append("-");
+			result.append(format.format(eventDate.endDate));
+			result.append("; ");
+		}
+		return result.toString();
 	}
 }
