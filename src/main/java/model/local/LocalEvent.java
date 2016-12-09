@@ -9,7 +9,9 @@ public class LocalEvent {
 	public int id;
 	public LinkedList<EventDate> dates = new LinkedList<EventDate>();
 	public LinkedList<LocalTime> sessions = new LinkedList<LocalTime>();
-	public String place;
+	public String place = "";
+	public String address = "";
+	public LinkedList<String> phones = new LinkedList<String>();
 	public String name;
 	public String description;
 	public String link;

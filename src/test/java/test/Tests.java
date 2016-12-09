@@ -27,6 +27,8 @@ public class Tests {
 				result.append("Dates: " + event.getDateString() + "\r\n");
 				result.append("Time: " + event.getTimeString() + "\r\n");
 				result.append("Place: " + event.place + "\r\n");
+				result.append("Address: " + event.address + "\r\n");
+				result.append("Phones: " + String.join("; ", event.phones) + "\r\n");
 				result.append("Name: " + event.name + "\r\n");
 				result.append("Link: " + event.link + "\r\n");
 			} else {

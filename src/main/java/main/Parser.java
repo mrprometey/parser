@@ -6,7 +6,6 @@ import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -50,20 +49,32 @@ public class Parser {
 			return null;
 		}
 		
+		//Parse first line
 		String[] parts = lines[0].split("@");
 		
 		parseDate(parts[0].trim().toLowerCase(), event);
 		
-		String[] parts2 = parts[1].split(",");
-		Pattern timePattern = Pattern.compile("(?:\\d|[01]\\d|2[0-3])[:\\.\\- ]\\d{2}");
-		int i = 0;
-		while (i<parts2.length && !timePattern.matcher(parts2[i]).find()) {
-			i++;
-		}
-		if (i>0 && i<parts2.length){
-			String timePart = String.join(",", Arrays.copyOfRange(parts2, i, parts2.length));
+		Pattern placeTimePattern = Pattern.compile("^(.*?)[ \\.,\\(]{1,3}[васз]? ?((?:d|[01]\\d|2[0-3])[:\\.\\- ]\\d[05])");
+		Matcher matcher = placeTimePattern.matcher(parts[1]);
+		if (matcher.find()) {
+			event.place = matcher.group(1);
+			String timePart = parts[1].substring(matcher.start(2));
 			parseTime(timePart, event);
-			event.place = String.join(",", Arrays.copyOfRange(parts2, 0, i));
+		}
+		
+		//Find adress
+		Pattern addressPattern = Pattern.compile("(?m)(?:Адрес:|Место проведения:| по адресу:) (.*?)$");
+		matcher = addressPattern.matcher(text);
+		if (matcher.find()) {
+			event.address = matcher.group(1);
+		}
+		
+		//Find phones
+		Pattern phonePattern = Pattern.compile("(?:\\+375\\D{0,2}|8\\D{0,2}0)\\d{2}\\D{0,2}(?:[ -]?\\d){7}");
+		matcher = phonePattern.matcher(text);
+		while (matcher.find()) {
+			String phone = matcher.group().replaceAll("\\D+","").replaceFirst("^80", "375");
+			event.phones.add("+" + phone);
 		}
 		
 		event.name = lines[1];
@@ -157,7 +168,7 @@ public class Parser {
 		Matcher matcher = timePattern.matcher(input);
 		
 		//List of sessions
-		if (input.matches("(?:[и;,/ ]{0,3}(?:\\d|[01]\\d|2[0-3])[:\\.\\- ]\\d[05]){2,}")) {
+		if (input.matches("(?:[и;,/\\\\ ]{0,3}(?:\\d|[01]\\d|2[0-3])[:\\.\\- ]\\d[05]){2,}")) {
 			while (matcher.find()) {
 				try {
 					Integer hours = Integer.valueOf(matcher.group(1));
